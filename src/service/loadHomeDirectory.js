@@ -1,37 +1,49 @@
+import {getAllFilesInHome} from './getAllFilesInHome'
+
 const loadHomeDirectory = async (event) => {
-    let all = []
+    let count = 0;
     try {
-        let response = await gapi.client.drive.files
-            .list({
-                fields: 'nextPageToken, files(id, name, mimeType, modifiedTime)',
-                q: "'me' in owners"
-            })
-        all.push(...response.result.files)
-        while (response.result.nextPageToken) {
-            response = await gapi.client.drive.files
-                .list({
-                    fields: 'nextPageToken, files(id, name, mimeType, modifiedTime)',
-                    pageToken: response.result.nextPageToken,
-                    q: "'me' in owners"
-                })
-            console.log(response)
-            all.push(...response.result.files)
+        const all = await getAllFilesInHome();
+
+        all.forEach(item => {
+            const mimeType = item.mimeType;
+            if (mimeType === 'application/vnd.google-apps.folder') {
+                count++;
+            }
+        })
+
+        let perc = count / all.length;
+
+        if (perc > 0 && perc < 0.4) {
+            return {
+                'type':'UNORGANIZED',
+                'total': all.length,
+                'files': all.length - count,
+            };
+        } else if (perc > 0.4 && perc < 0.7) {
+            return {
+                'type':'MODARATELY ORGANIZED',
+                'total': all.length,
+                'files': all.length - count,
+            };
+        } else if (perc > 0.7 && perc < 0.95) {
+            return {
+                'type':'KIND OF ORGANIZED',
+                'total': all.length,
+                'files': all.length - count,
+            };
+        } else {
+            return {
+                'type':'VERY ORGANIZED',
+                'total': all.length,
+                'files': all.length - count,
+            };
         }
-        exportData(all)
+
     } catch (err) {
         console.log(err)
     }
 }
 
-const exportData = (data) => {
-    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-        JSON.stringify(data)
-    )}`;
-    const link = document.createElement("a");
-    link.href = jsonString;
-    link.download = "data.json";
-
-    link.click();
-};
 
 export { loadHomeDirectory }

@@ -3,24 +3,35 @@ import { Button, Card, CardBody, Flex, Heading, Stack, Text, Icon, Center, Box, 
 import { FaGoogleDrive } from "react-icons/fa";
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import {loadHomeDirectory} from '../service/loadHomeDirectory'
+import { handleOptimizeDrive } from '../service/optimizeFiles'
+const statusColors = {
+  'UNORGANIZED': 'red',
+  'MODARATELY ORGANIZED': 'orange',
+  'KIND OF ORGANIZED': 'yellow',
+  'ORGANIZED': 'green'
+}
 
 export default function Home({ user, handleSignIn }) {
-  const [loadedHomeDirectory, setLoadedHomeDirectory] = useState(false)
+  const [loadHomeStatus, setLoadHomeStatus] = useState(null)
   const [loading, setLoading] = useState(false)
-  const organizeFiles = () => {
-    setLoading(true)
-    setTimeout(() => setLoading(false), 2000)
-  }
-
+  
   useEffect(() => {
     async function fetchHomeDirectory() {
       var res = await loadHomeDirectory();
-      setLoadedHomeDirectory(true)
+      setLoadHomeStatus(res)
     }
     if(user){
       fetchHomeDirectory()
     }
   }, [user])
+
+  const organizeFiles = async () => {
+    setLoading(true)
+    let res = await handleOptimizeDrive()
+    if(res){
+      setLoading(false)
+    }
+  }
 
   return (
     <Flex align="center" justify={user ? 'start' : 'center'} textAlign='center'>
@@ -38,9 +49,10 @@ export default function Home({ user, handleSignIn }) {
         </Flex>
         <Divider orientation='horizontal' />
         <Flex flexDir='column' justifyContent='center' alignItems='start' mt={2}>
-          {loadedHomeDirectory ? 
+          {loadHomeStatus ? 
           <>
-          <Text fontWeight='bold' mb={3}>Current Status: <Badge colorScheme='red'>Unorganized</Badge></Text>
+          <Text fontWeight='bold'>Current <Icon as={FaGoogleDrive} boxSize={4} /> Status: <Badge colorScheme={statusColors[loadHomeStatus.type]}>{loadHomeStatus.type}</Badge></Text>
+          <Text mb={3}>Files without proper folders: {loadHomeStatus.files} / {loadHomeStatus.total}</Text>
           <Button isLoading={loading} size='sm' onClick={() => organizeFiles()} colorScheme='teal'>Organize Now</Button>
           </>
             : <Spinner color='teal.500' />}

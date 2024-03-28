@@ -4,13 +4,24 @@ import About from './components/About';
 import { Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import Footer from './components/Footer';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES } from './config'
 import { gapi } from "gapi-script";
 
 export default function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    handleClientLoad()
+  }, []);
+
+  useEffect(() => {
+    const getUser = localStorage.getItem('gapi.auth2.currentUser');
+    if(getUser) {
+      setUser(JSON.parse(getUser))
+    }
+  }, [])
 
   const initClient = () => {
     gapi.client
@@ -38,8 +49,8 @@ export default function App() {
 
   const updateSigninStatus = (isSignedIn) => {
     if (isSignedIn) {
-      console.log(gapi.auth2.getAuthInstance().currentUser)
       setUser(gapi.auth2.getAuthInstance().currentUser)
+      localStorage.setItem('gapi.auth2.currentUser', JSON.stringify(gapi.auth2.getAuthInstance().currentUser));
     }
     else {
       // prompt user to sign in
