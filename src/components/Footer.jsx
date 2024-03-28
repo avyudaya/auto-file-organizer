@@ -10,10 +10,10 @@ export default function Footer() {
         <Flex mt={6} flexDir='column' align="center" justify="center" textAlign='center'>
             <Text>Made for the love of open source.</Text>
             <Flex mt={2}>
-                <IconButton aria-label='LinkedIn' size='sm' color='gray.800' padding={1}  as={FaLinkedin}/>
-                <IconButton aria-label='Twitter' size='sm' color='gray.800' padding={1} as={FaXTwitter}/>
-                <IconButton aria-label='Github' size='sm' color='gray.800' padding={1} as={FaGithub}/>
-                <IconButton aria-label='Instagram' size='sm' color='gray.800' padding={1} as={FaInstagram}/>
+                <IconButton isRound={true} onClick={() => { }} aria-label='LinkedIn' size='sm' color='gray.800' margin={0.5} icon={<FaLinkedin/>} />
+                <IconButton isRound={true} aria-label='Twitter' size='sm' color='gray.800' margin={0.5} icon={<FaXTwitter/>} />
+                <IconButton isRound={true} aria-label='Github' size='sm' color='gray.800' margin={0.5} icon={<FaGithub/>} />
+                <IconButton isRound={true} aria-label='Instagram' size='sm' color='gray.800' margin={0.5} icon={<FaInstagram/>} />
             </Flex>
         </Flex>
     )
