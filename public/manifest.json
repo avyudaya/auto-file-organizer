@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Files Organizer",
+    "version": "1.0",
+    "description": "Auto organize all the files and folders in your gDrive leveraging the power of AI.",
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "scripting",
+        "tabs",
+        "activeTab"
+    ],
+    "host_permissions": [
+        "https://*/*",
+        "http://*/*"
+    ],
+    "icons": {
+        "16": "images/icon.png",
+        "32": "images/icon.png"
+    }
+  }
