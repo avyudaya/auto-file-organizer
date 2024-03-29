@@ -37,9 +37,6 @@ const handleOptimizeDrive = async (event) => {
             }
             groupedByMimeType[mimeType].push(item);
         });
-
-        console.log(groupedByMimeType);
-
         return all
     } catch (err) {
         console.log(err)

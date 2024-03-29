@@ -4,15 +4,15 @@ const getAllFilesInHome = async () => {
     let response = await gapi.client.drive.files
         .list({
             fields: '*',
-            q: "'me' in owners"
+            q: "'me' in owners and 'root' in parents"
         })
     all.push(...response.result.files)
     while (response.result.nextPageToken) {
         response = await gapi.client.drive.files
             .list({
-                fields: 'nextPageToken, files(id, name, mimeType, modifiedTime)',
+                fields: '*',
                 pageToken: response.result.nextPageToken,
-                q: "'me' in owners"
+                q: "'me' in owners and 'root' in parents"
             })
         all.push(...response.result.files)
     }

@@ -15,13 +15,13 @@ export default function Footer() {
             <Text>Made for the love of open source.</Text>
             <Flex mt={2}>
                 <IconButton onClick={() => openInNewTab('https://www.linkedin.com/in/avyudaya-acharya-510824169/')} aria-label='LinkedIn'
-                    isRound={true} size='sm' color='gray.800' margin={0.5} icon={<FaLinkedin />} />
+                    isRound={true} size='sm' margin={0.5} icon={<FaLinkedin />} />
                 <IconButton onClick={() => openInNewTab('https://twitter.com/Aavyudaya')} aria-label='Twitter'
-                    isRound={true} size='sm' color='gray.800' margin={0.5} icon={<FaXTwitter />} />
+                    isRound={true} size='sm' margin={0.5} icon={<FaXTwitter />} />
                 <IconButton onClick={() => openInNewTab('https://github.com/avyudaya/')} aria-label='Github'
-                    isRound={true} size='sm' color='gray.800' margin={0.5} icon={<FaGithub />} />
+                    isRound={true} size='sm' margin={0.5} icon={<FaGithub />} />
                 <IconButton onClick={() => openInNewTab('https://www.instagram.com/avyudaya.acharya/')} aria-label='Instagram'
-                    isRound={true} size='sm' color='gray.800' margin={0.5} icon={<FaInstagram />} />
+                    isRound={true} size='sm' margin={0.5} icon={<FaInstagram />} />
             </Flex>
         </Flex>
     )

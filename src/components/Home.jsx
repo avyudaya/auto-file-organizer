@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, CardBody, Flex, Heading, Stack, Text, Icon, Center, Box, Avatar, Badge, Divider, Spinner, FormControl, FormLabel, Switch } from '@chakra-ui/react'
+import { Button, Card, CardBody, Flex, Heading, Stack, Text, Icon, Center, Box, Avatar, Badge, Divider, Spinner, useDisclosure, ModalOverlay
+} from '@chakra-ui/react'
 import { FaGoogleDrive } from "react-icons/fa";
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import { loadHomeDirectory } from '../service/loadHomeDirectory'
 import { handleOptimizeDrive } from '../service/optimizeFiles'
+import OrganizePicker from './OrganizePicker'
 const statusColors = {
   'UNORGANIZED': 'red',
   'MODARATELY ORGANIZED': 'orange',
@@ -33,31 +35,44 @@ export default function Home({ user, handleSignIn }) {
     }
   }
 
+  const OverlayOne = () => (
+    <ModalOverlay
+      bg='blackAlpha.300'
+      backdropFilter='blur(10px) hue-rotate(90deg)'
+    />
+  )
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [overlay, setOverlay] = useState(<OverlayOne />)
+
   return (
     <Flex align="center" justify={user ? 'start' : 'center'} textAlign='center'>
       {user ? <Box p={2} w='100vw'>
-        <Flex mb={3}>
-          <Avatar src={user.le.wt.hK} />
+        <Flex my={6}>
+          <Avatar size='lg' src={user.le.wt.hK} />
           <Box ml='3'>
-            <Text fontWeight='bold'>
+            <Text fontSize='xl' fontWeight='bold' mb={2}>
               {user.le.wt.Ad}
-              <Badge borderRadius={6} p={1} alignItems='center' display='flex' justifyContent='center' ml='1' colorScheme='green'>
+            </Text>
+            <Badge borderRadius={6} p={1} alignItems='center' display='flex' justifyContent='center' ml='1' colorScheme='green'>
                 Google Drive&nbsp;<Icon as={CheckCircleIcon} />
               </Badge>
-            </Text>
           </Box>
         </Flex>
         <Divider orientation='horizontal' />
-        <Flex flexDir='column' justifyContent='center' alignItems='start' mt={2}>
+        <Flex flexDir='column' justifyContent='center' alignItems='start' my={4}>
           {loadHomeStatus ?
             <>
-              <Text fontWeight='bold'>Current <Icon as={FaGoogleDrive} boxSize={4} /> Status: <Badge colorScheme={statusColors[loadHomeStatus.type]}>{loadHomeStatus.type}</Badge></Text>
-              <Text mb={3}>Files without proper folders: {loadHomeStatus.files} / {loadHomeStatus.total}</Text>
-              <Button isLoading={loading} size='sm' onClick={() => organizeFiles()} colorScheme='teal'>Organize Now</Button>
+              <Text fontSize='lg' fontWeight='bold'> <Icon as={FaGoogleDrive} boxSize={4} /> Google Drive Status: <Badge colorScheme={statusColors[loadHomeStatus.type]}>{loadHomeStatus.type}</Badge></Text>
+              <Text mb={4} fontSize='lg'>Files without proper folders: {loadHomeStatus.files} / {loadHomeStatus.total}</Text>
+              <Button isLoading={loading} onClick={() => {
+                setOverlay(<OverlayOne />)
+                onOpen()
+              }} colorScheme='teal' size='sm'>Organize Now</Button>
+              <OrganizePicker isOpen={isOpen} onClose={onClose} overlay={overlay} size='5xl' />
             </>
             : <Spinner color='teal.500' />}
         </Flex>
-        <Divider m={3} orientation='horizontal' />
+        <Divider orientation='horizontal' />
         {/* <Flex>
           <FormControl display='flex' alignItems='center'>
             <FormLabel htmlFor='new-files-alerts' mb='0'>
@@ -75,7 +90,7 @@ export default function Home({ user, handleSignIn }) {
               <Text marginTop={2}>
                 Sign in to connect and organize your google drive files.
               </Text>
-              <Button onClick={() => handleSignIn()} colorScheme='teal'>Sign In</Button>
+              <Button onClick={() => handleSignIn()} colorScheme='teal' size='sm'>Sign In</Button>
             </Stack>
           </CardBody>
         </Card>}

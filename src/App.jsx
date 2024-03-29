@@ -55,11 +55,11 @@ export default function App() {
   };
 
   const handleSignOutClick = (event) => {
-    gapi.auth2.getAuthInstance().signOut();
+    gapi.auth2.getAuthInstance().signOut().then(() => setUser(null))
   }
 
   return (
-    <Box maxW='3xl' p='4' margin='auto'>
+    <Box maxW='5xl' p='4' margin='auto'>
       <Navbar user={user} signOut={handleSignOutClick}/>
       <Routes>
         <Route path='/about' element={<About/>}/>

@@ -1,8 +1,11 @@
-import { Box, Button, ButtonGroup, Flex, Heading, Spacer } from '@chakra-ui/react'
+import { SunIcon, MoonIcon } from '@chakra-ui/icons'
+import { Box, Button, ButtonGroup, Flex, Heading, IconButton, Spacer, useColorMode } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Navbar({ user, signOut }) {
+    const { colorMode, toggleColorMode } = useColorMode()
+
     return (
         <Flex minWidth='max-content' alignItems='center' gap='2'>
             <Box p='2'>
@@ -10,9 +13,11 @@ export default function Navbar({ user, signOut }) {
             </Box>
             <Spacer />
             <ButtonGroup>
-                <Button p={1} colorScheme='teal' as={Link} to='/about' variant='ghost'>About</Button>
-                {user && <Button onClick={signOut} p={1} colorScheme='teal' variant='ghost'>Signout</Button>
+                <Button colorScheme='teal' as={Link} to='/about' variant='ghost'>About</Button>
+                {user && <Button onClick={signOut} colorScheme='teal' variant='ghost'>Signout</Button>
                 }
+                <IconButton onClick={toggleColorMode} aria-label='Search database' icon={colorMode == 'light' ? <MoonIcon /> : <SunIcon />} />
+
             </ButtonGroup>
         </Flex>
     )
