@@ -1,8 +1,19 @@
-# React + Vite
+# Google Drive Files Organizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### How to run
 
-Currently, two official plugins are available:
+1. Create a google developer project
+2. Add Google Drive Api
+3. Put the VITE_REACT_APP_GOOGLE_DRIVE_API_KEY and VITE_REACT_APP_GOOGLE_DRIVE_CLIENT_ID into the .env file.
+4. Run 'npm install'
+5. Run 'npm run dev'
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Current Status
+
+1. Connects to the Google Drive API and gets all the relevant information as json file.
+
+### TODO
+
+1. Let user pick one of three (suppose) standardized folder structure formats. (Can also let users decide what they want using a prompt.)
+2. Analyze all the existing files and folder structure and suggest a better solution.
+3. If the user picks the format make changes to the Google Drive.
