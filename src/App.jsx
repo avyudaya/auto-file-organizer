@@ -10,18 +10,10 @@ import { gapi } from "gapi-script";
 
 export default function App() {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     handleClientLoad()
   }, []);
-
-  useEffect(() => {
-    const getUser = localStorage.getItem('gapi.auth2.currentUser');
-    if(getUser) {
-      setUser(JSON.parse(getUser))
-    }
-  }, [])
 
   const initClient = () => {
     gapi.client
@@ -70,8 +62,8 @@ export default function App() {
     <Box maxW='3xl' p='4' margin='auto'>
       <Navbar user={user} signOut={handleSignOutClick}/>
       <Routes>
-        <Route path='/' element={<Home user={user} handleSignIn={handleClientLoad}/>}/>
         <Route path='/about' element={<About/>}/>
+        <Route path='/' element={<Home user={user} handleSignIn={handleClientLoad}/>}/>
       </Routes>
       <Footer/>
     </Box>

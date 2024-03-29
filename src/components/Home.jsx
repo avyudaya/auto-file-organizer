@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, CardBody, Flex, Heading, Stack, Text, Icon, Center, Box, Avatar, Badge, Divider, Spinner } from '@chakra-ui/react'
+import { Button, Card, CardBody, Flex, Heading, Stack, Text, Icon, Center, Box, Avatar, Badge, Divider, Spinner, FormControl, FormLabel, Switch } from '@chakra-ui/react'
 import { FaGoogleDrive } from "react-icons/fa";
 import { CheckCircleIcon } from '@chakra-ui/icons'
-import {loadHomeDirectory} from '../service/loadHomeDirectory'
+import { loadHomeDirectory } from '../service/loadHomeDirectory'
 import { handleOptimizeDrive } from '../service/optimizeFiles'
 const statusColors = {
   'UNORGANIZED': 'red',
@@ -14,13 +14,13 @@ const statusColors = {
 export default function Home({ user, handleSignIn }) {
   const [loadHomeStatus, setLoadHomeStatus] = useState(null)
   const [loading, setLoading] = useState(false)
-  
+
   useEffect(() => {
     async function fetchHomeDirectory() {
       var res = await loadHomeDirectory();
       setLoadHomeStatus(res)
     }
-    if(user){
+    if (user) {
       fetchHomeDirectory()
     }
   }, [user])
@@ -28,7 +28,7 @@ export default function Home({ user, handleSignIn }) {
   const organizeFiles = async () => {
     setLoading(true)
     let res = await handleOptimizeDrive()
-    if(res){
+    if (res) {
       setLoading(false)
     }
   }
@@ -49,14 +49,23 @@ export default function Home({ user, handleSignIn }) {
         </Flex>
         <Divider orientation='horizontal' />
         <Flex flexDir='column' justifyContent='center' alignItems='start' mt={2}>
-          {loadHomeStatus ? 
-          <>
-          <Text fontWeight='bold'>Current <Icon as={FaGoogleDrive} boxSize={4} /> Status: <Badge colorScheme={statusColors[loadHomeStatus.type]}>{loadHomeStatus.type}</Badge></Text>
-          <Text mb={3}>Files without proper folders: {loadHomeStatus.files} / {loadHomeStatus.total}</Text>
-          <Button isLoading={loading} size='sm' onClick={() => organizeFiles()} colorScheme='teal'>Organize Now</Button>
-          </>
+          {loadHomeStatus ?
+            <>
+              <Text fontWeight='bold'>Current <Icon as={FaGoogleDrive} boxSize={4} /> Status: <Badge colorScheme={statusColors[loadHomeStatus.type]}>{loadHomeStatus.type}</Badge></Text>
+              <Text mb={3}>Files without proper folders: {loadHomeStatus.files} / {loadHomeStatus.total}</Text>
+              <Button isLoading={loading} size='sm' onClick={() => organizeFiles()} colorScheme='teal'>Organize Now</Button>
+            </>
             : <Spinner color='teal.500' />}
         </Flex>
+        <Divider m={3} orientation='horizontal' />
+        {/* <Flex>
+          <FormControl display='flex' alignItems='center'>
+            <FormLabel htmlFor='new-files-alerts' mb='0'>
+              Place new files in proper location automatically?
+            </FormLabel>
+            <Switch colorScheme='teal' id='new-files-alerts' />
+          </FormControl>
+        </Flex> */}
       </Box> :
         <Card maxW='sm' variant='unstyled'>
           <CardBody>

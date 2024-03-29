@@ -1,8 +1,9 @@
 const getAllFilesInHome = async () => {
-    let all = []
+    try {
+        let all = []
     let response = await gapi.client.drive.files
         .list({
-            fields: 'nextPageToken, files(id, name, mimeType, modifiedTime)',
+            fields: '*',
             q: "'me' in owners"
         })
     all.push(...response.result.files)
@@ -16,6 +17,9 @@ const getAllFilesInHome = async () => {
         all.push(...response.result.files)
     }
     return all
+    } catch(err){
+        console.log(err)
+    }
 }
 
 export { getAllFilesInHome }
