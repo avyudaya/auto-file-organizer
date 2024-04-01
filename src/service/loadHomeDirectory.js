@@ -13,8 +13,10 @@ const loadHomeDirectory = async (event) => {
         })
 
         let perc = count / all.length;
+        console.log(count)
+        console.log(all.length)
 
-        if (perc > 0 && perc < 0.4) {
+        if (perc >= 0 && perc < 0.4) {
             return {
                 'type':'UNORGANIZED',
                 'total': all.length,
